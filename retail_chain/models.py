@@ -11,12 +11,18 @@ class Contacts(models.Model):
     street = models.CharField(max_length=100, verbose_name='Улица')
     home = models.IntegerField(verbose_name='Номер дома')
 
+    def __str__(self):
+        return f'{self.country}, {self.street}, {self.home}\n{self.email}'
+
 
 class Product(models.Model):
     """Модель продукта для сети по продаже электроники"""
     title = models.CharField(max_length=100, verbose_name='Название')
     product_model = models.CharField(max_length=255, verbose_name='Модель продукта')
     reliz_date = models.DateField(verbose_name='Дата выхода')
+
+    def __str__(self):
+        return f'{self.title} {self.product_model}'
 
 
 class Link(models.Model):
