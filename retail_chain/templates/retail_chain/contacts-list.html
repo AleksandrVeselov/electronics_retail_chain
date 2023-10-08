@@ -9,7 +9,7 @@
 <div class="container">
     {% for object in object_list %}
         <div class="row text-center">
-            <p class="lead">{{ object.city }}</p>
+            <p class="lead"><a class="text-muted" href="{% url 'retail-chain:retail-chain-city' object.pk %}">{{ object.city }}</a></p>
         </div>
     {% endfor %}
 

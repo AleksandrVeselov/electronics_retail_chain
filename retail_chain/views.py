@@ -11,6 +11,18 @@ class RetailChainView(ListView):
     model = Link
     template_name = 'retail_chain/retail_chain.html'
 
+    def get_queryset(self, *args, **kwargs):
+
+        pk = self.kwargs.get('pk')
+        queryset = Link.objects.all()
+        if pk:
+            city = Contacts.objects.get(pk=pk).city
+            new_queryset = [link for link in queryset if link.contacts.city == city]
+            queryset = new_queryset
+        return queryset
+
+
+
 
 class RetailChainDetailView(DetailView):
     """Контроллер для отображения страницы с информацией о звене сети"""

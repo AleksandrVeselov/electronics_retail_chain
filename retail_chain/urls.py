@@ -10,4 +10,5 @@ urlpatterns = [
     path('link/<int:pk>', RetailChainDetailView.as_view(), name='retail-chain'),
     path('clear-debt/<int:pk>', clear_debt, name='clear-debt'),
     path('city-list', ContactsListView.as_view(), name='city-list'),
+    path('<int:pk>', RetailChainView.as_view(), name='retail-chain-city')
 ]
