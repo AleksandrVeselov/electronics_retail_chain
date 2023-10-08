@@ -1,0 +1,17 @@
+{% extends 'retail_chain/base.html'%}
+
+{% block content %}
+
+<div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+    <h1 class="display-4">Выберите город для вывода результатов</h1>
+</div>
+
+<div class="container">
+    {% for object in object_list %}
+        <div class="row text-center">
+            <p class="lead">{{ object.city }}</p>
+        </div>
+    {% endfor %}
+
+</div>
+{% endblock %}

@@ -12,7 +12,7 @@ class Contacts(models.Model):
     home = models.IntegerField(verbose_name='Номер дома')
 
     def __str__(self):
-        return f'{self.country}, {self.street}, {self.home}\n{self.email}'
+        return f'{self.country}, {self.city}, {self.street}, {self.home}\n{self.email}'
 
 
 class Product(models.Model):

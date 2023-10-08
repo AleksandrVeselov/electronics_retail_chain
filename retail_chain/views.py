@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.views.generic import ListView, DetailView
 
-from retail_chain.models import Link
+from retail_chain.models import Link, Contacts
 
 
 class RetailChainView(ListView):
@@ -26,3 +26,22 @@ def clear_debt(request, pk):
     link.save()  # сохраняем результат
 
     return redirect(reverse('retail-chain:retail-chain-list'))
+
+
+class ContactsListView(ListView):
+    """Контроллер для отображения списка городов"""
+    model = Contacts
+    template_name = 'retail_chain/contacts-list.html'
+
+    def get_queryset(self):
+
+        contacts = Contacts.objects.all()
+        queryset = []
+        cities = []
+
+        for contact in contacts:
+            if contact.city not in cities:
+                cities.append(contact.city)
+                queryset.append(contact)
+
+        return queryset
