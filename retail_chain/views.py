@@ -7,20 +7,21 @@ from django.views.generic import ListView, DetailView
 from retail_chain.models import Link, Contacts
 
 
-class RetailChainView(LoginRequiredMixin, ListView):
+class RetailChainView(ListView):
     """Класс-контроллер для отображения главной страницы"""
 
     model = Link
     template_name = 'retail_chain/retail_chain.html'
 
     def get_queryset(self, *args, **kwargs):
-
-        pk = self.kwargs.get('pk')
-        queryset = Link.objects.all()
-        if pk:
-            city = Contacts.objects.get(pk=pk).city
-            new_queryset = [link for link in queryset if link.contacts.city == city]
-            queryset = new_queryset
+        queryset = []
+        if not self.request.user.is_anonymous:
+            pk = self.kwargs.get('pk')
+            queryset = Link.objects.all()
+            if pk:
+                city = Contacts.objects.get(pk=pk).city
+                new_queryset = [link for link in queryset if link.contacts.city == city]
+                queryset = new_queryset
         return queryset
 
 

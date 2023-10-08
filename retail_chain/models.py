@@ -14,12 +14,20 @@ class Contacts(models.Model):
     def __str__(self):
         return f'{self.country}, {self.city}, {self.street}, {self.home}\n{self.email}'
 
+    class Meta:
+        verbose_name = 'Контакт'
+        verbose_name_plural = 'Контакты'
+
 
 class Product(models.Model):
     """Модель продукта для сети по продаже электроники"""
     title = models.CharField(max_length=100, verbose_name='Название')
     product_model = models.CharField(max_length=255, verbose_name='Модель продукта')
     reliz_date = models.DateField(verbose_name='Дата выхода')
+
+    class Meta:
+        verbose_name = 'Продукт'
+        verbose_name_plural = 'Продукты'
 
     def __str__(self):
         return f'{self.title} {self.product_model}'
@@ -39,3 +47,10 @@ class Link(models.Model):
                                decimal_places=2,
                                verbose_name='Задолженность')  # задолженность перед поставщиком
     created_at = models.DateTimeField(auto_now_add=True)  # дата/время создания
+
+    class Meta:
+        verbose_name = 'Звено'
+        verbose_name_plural = 'Звенья'
+
+    def __str__(self):
+        return self.title
