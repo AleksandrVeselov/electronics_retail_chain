@@ -20,8 +20,8 @@
                             <h5>Поставщик:</h5>
                             <a href="{% url 'retail-chain:retail-chain' object.supplier.pk %}" type="button" class="btn btn-lt btn-block btn-outline-success">Перейти</a>
                             <h5>Задолженность:</h5>
-                            <li>{{ object.debt }}</li>
-                            <a href="#" type="button" class="btn btn-lt btn-block btn-outline-danger">Очистить</a>
+                            <li>{{ object.debt }} руб</li>
+                            <a href="{% url 'retail-chain:clear-debt' object.pk %}" type="button" class="btn btn-lt btn-block btn-outline-danger">Очистить</a>
                         {% endif %}
                     </ul>
                 </div>

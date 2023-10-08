@@ -12,9 +12,6 @@
     <h3 class="my-0 mr-md-auto font-weight-normal">{{ employee.name }}</h3>
     <h5 class="my-0 mr-md-auto font-weight-normal">Добро пожаловать в торговую сеть электроники</h5>
     <nav class="ms-6">
-        {% if user.is_authenticated %}
-            <a href="#" type="button" class="p-2 btn btn-outline-primary">Создать рассылку</a>
-        {% endif %}
         <a class="p-2 btn btn-outline-primary" href="/">Главная</a>
 
         {% if user.is_authenticated %}
@@ -23,6 +20,7 @@
             <a class="p-2 btn btn-outline-primary" href="#">Войти</a>
             <a class="p-2 btn btn-outline-primary" href="#">Регистрация</a>
         {% endif %}
+
     </nav>
 </div>
 <body>
