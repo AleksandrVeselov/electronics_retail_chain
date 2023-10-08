@@ -1,3 +1,5 @@
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.views.generic import ListView, DetailView
@@ -5,7 +7,7 @@ from django.views.generic import ListView, DetailView
 from retail_chain.models import Link, Contacts
 
 
-class RetailChainView(ListView):
+class RetailChainView(LoginRequiredMixin, ListView):
     """Класс-контроллер для отображения главной страницы"""
 
     model = Link
@@ -22,14 +24,13 @@ class RetailChainView(ListView):
         return queryset
 
 
-
-
-class RetailChainDetailView(DetailView):
+class RetailChainDetailView(LoginRequiredMixin, DetailView):
     """Контроллер для отображения страницы с информацией о звене сети"""
     model = Link
     template_name = 'retail_chain/link_detail.html'
 
 
+@login_required
 def clear_debt(request, pk):
     """контроллер для обнуления задолженности перед поставщиком"""
 
@@ -40,7 +41,7 @@ def clear_debt(request, pk):
     return redirect(reverse('retail-chain:retail-chain-list'))
 
 
-class ContactsListView(ListView):
+class ContactsListView(LoginRequiredMixin, ListView):
     """Контроллер для отображения списка городов"""
     model = Contacts
     template_name = 'retail_chain/contacts-list.html'

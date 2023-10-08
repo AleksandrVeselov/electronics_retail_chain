@@ -20,9 +20,8 @@
     </div>
     {% if object.supplier %}
         <div class="row text-center">
-            <p class="lead">Поставщик: {{ object.supplier.title }}</p>
+            <p class="lead">Поставщик: <a href="{% url 'retail-chain:retail-chain' object.supplier.pk %}">{{ object.supplier.title }}</a></p>
         </div>
-        <a href="{% url 'retail-chain:retail-chain' object.supplier.pk %}" type="button" class="btn btn-lt btn-block btn-outline-success">Перейти</a>
         <div class="row text-center">
             <p class="lead">Задолженность перед поставщиком: {{ object.debt }} руб.</p>
         </div>
