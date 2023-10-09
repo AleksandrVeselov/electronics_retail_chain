@@ -1,9 +1,9 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect
 from django.urls import reverse
 from django.views.generic import ListView, DetailView
-from rest_framework import generics
+from rest_framework import generics, filters
 from rest_framework.permissions import IsAuthenticated
 
 from retail_chain.models import Link, Contacts
@@ -71,6 +71,9 @@ class LinkListAPIView(generics.ListAPIView):
     queryset = Link.objects.all()
 
     permission_classes = [IsAuthenticated]
+
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['contacts__country']
 
 
 class LinkCreateAPIView(generics.CreateAPIView):
