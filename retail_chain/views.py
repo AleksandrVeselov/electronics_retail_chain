@@ -13,25 +13,33 @@ from retail_chain.serializers import LinkSerializer
 class RetailChainView(ListView):
     """Класс-контроллер для отображения главной страницы"""
 
-    model = Link
-    template_name = 'retail_chain/retail_chain.html'
+    model = Link  # Модель
+    template_name = 'retail_chain/retail_chain.html'  # шаблон
 
     def get_queryset(self, *args, **kwargs):
-        queryset = []
+        """Переопределение метода для формирования списка нужного списка звеньев сети"""
+
+        queryset = []  # изначальный список
+
+        # если пользователь авторизован
         if not self.request.user.is_anonymous:
-            pk = self.kwargs.get('pk')
-            queryset = Link.objects.all()
+            pk = self.kwargs.get('pk')  # проверяем есть ли в аргументах pk(ссылка на контакты)
+            queryset = Link.objects.all()  # наполняем список звеньев сети
+
+            # если в аргументах есть pk
             if pk:
-                city = Contacts.objects.get(pk=pk).city
-                new_queryset = [link for link in queryset if link.contacts.city == city]
-                queryset = new_queryset
+
+                city = Contacts.objects.get(pk=pk).city  # по переданному pk находим город
+                new_queryset = [link for link in queryset if link.contacts.city == city] # фильтруем список по городу
+                queryset = new_queryset  # перезаписываем список звеньев сети
+
         return queryset
 
 
 class RetailChainDetailView(LoginRequiredMixin, DetailView):
     """Контроллер для отображения страницы с информацией о звене сети"""
-    model = Link
-    template_name = 'retail_chain/link_detail.html'
+    model = Link  # модель
+    template_name = 'retail_chain/link_detail.html'  # шаблон
 
 
 @login_required
@@ -42,24 +50,28 @@ def clear_debt(request, pk):
     link.debt = 0  # обнуляем задолженность перед поставщиком
     link.save()  # сохраняем результат
 
-    return redirect(reverse('retail-chain:retail-chain-list'))
+    return redirect(reverse('retail-chain:retail-chain-list'))  # перенаправляем на главную страницу
 
 
 class ContactsListView(LoginRequiredMixin, ListView):
     """Контроллер для отображения списка городов"""
-    model = Contacts
-    template_name = 'retail_chain/contacts-list.html'
+
+    model = Contacts  # Модель
+    template_name = 'retail_chain/contacts-list.html'  # шаблон
 
     def get_queryset(self):
+        """переопределяем метод для создания списка контактов с уникальными городами"""
 
-        contacts = Contacts.objects.all()
-        queryset = []
-        cities = []
+        contacts = Contacts.objects.all()  # список всех контактов
+        queryset = []  # пустой список контактов
+        cities = []  # пустой список городов
 
         for contact in contacts:
+
+            # если города еще нет в списке
             if contact.city not in cities:
-                cities.append(contact.city)
-                queryset.append(contact)
+                cities.append(contact.city)  # добавляем город в список городов
+                queryset.append(contact)  # добавляем контакты в список контактов
 
         return queryset
 
@@ -67,48 +79,48 @@ class ContactsListView(LoginRequiredMixin, ListView):
 class LinkListAPIView(generics.ListAPIView):
     """Контроллер для просмотра списка звеньев сети через API"""
 
-    serializer_class = LinkSerializer
-    queryset = Link.objects.all()
+    serializer_class = LinkSerializer  # Сериализатор
+    queryset = Link.objects.all()  # список звеньев сети
 
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]  # разрешение на доступ только авторизованным пользователям
 
-    filter_backends = [filters.SearchFilter]
-    search_fields = ['contacts__country']
+    filter_backends = [filters.SearchFilter]  # фильтр
+    search_fields = ['contacts__country']  # поле фильтрации по стране
 
 
 class LinkCreateAPIView(generics.CreateAPIView):
     """Контроллер для создания звена сети"""
 
-    serializer_class = LinkSerializer
-    permission_classes = [IsAuthenticated]
+    serializer_class = LinkSerializer  # сериализатор
+    permission_classes = [IsAuthenticated]  # разрешение на доступ только авторизованным пользователям
 
 
 class LinkRetrieveAPIView(generics.RetrieveAPIView):
     """Контроллер для просмотра звена сети"""
 
-    serializer_class = LinkSerializer
-    queryset = Link.objects.all()
+    serializer_class = LinkSerializer  # сериализатор
+    queryset = Link.objects.all()  # список звеньев сети
 
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]  # разрешение на доступ только авторизованным пользователям
 
 
 class LinkDestroyAPIView(generics.DestroyAPIView):
     """Контроллер для удаления звена сети"""
 
-    queryset = Link.objects.all()
+    queryset = Link.objects.all()  # список звеньев сети
 
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]  # разрешение на доступ только авторизованным пользователям
 
 
 class LinkUpdateAPIView(generics.UpdateAPIView):
     """Контроллер для изменения звена сети"""
 
-    serializer_class = LinkSerializer
-    queryset = Link.objects.all()
-    permission_classes = [IsAuthenticated]
+    serializer_class = LinkSerializer  # сериализатор
+    queryset = Link.objects.all()  # список звеньев сети
+    permission_classes = [IsAuthenticated]  # разрешение на доступ только авторизованным пользователям
 
     def perform_update(self, serializer):
         """Удаляем поле debt из обновляемых данных"""
 
-        debt = serializer.validated_data.pop('debt', None)
-        serializer.save()
+        debt = serializer.validated_data.pop('debt', None)  # удаление поля
+        serializer.save()  # сохранение обновленных данных
