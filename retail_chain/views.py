@@ -3,8 +3,11 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.views.generic import ListView, DetailView
+from rest_framework import generics
+from rest_framework.permissions import IsAuthenticated
 
 from retail_chain.models import Link, Contacts
+from retail_chain.serializers import LinkSerializer
 
 
 class RetailChainView(ListView):
@@ -59,3 +62,50 @@ class ContactsListView(LoginRequiredMixin, ListView):
                 queryset.append(contact)
 
         return queryset
+
+
+class LinkListAPIView(generics.ListAPIView):
+    """Контроллер для просмотра списка звеньев сети через API"""
+
+    serializer_class = LinkSerializer
+    queryset = Link.objects.all()
+
+    permission_classes = [IsAuthenticated]
+
+
+class LinkCreateAPIView(generics.CreateAPIView):
+    """Контроллер для создания звена сети"""
+
+    serializer_class = LinkSerializer
+    permission_classes = [IsAuthenticated]
+
+
+class LinkRetrieveAPIView(generics.RetrieveAPIView):
+    """Контроллер для просмотра звена сети"""
+
+    serializer_class = LinkSerializer
+    queryset = Link.objects.all()
+
+    permission_classes = [IsAuthenticated]
+
+
+class LinkDestroyAPIView(generics.DestroyAPIView):
+    """Контроллер для удаления звена сети"""
+
+    queryset = Link.objects.all()
+
+    permission_classes = [IsAuthenticated]
+
+
+class LinkUpdateAPIView(generics.UpdateAPIView):
+    """Контроллер для изменения звена сети"""
+
+    serializer_class = LinkSerializer
+    queryset = Link.objects.all()
+    permission_classes = [IsAuthenticated]
+
+    def perform_update(self, serializer):
+        """Удаляем поле debt из обновляемых данных"""
+
+        debt = serializer.validated_data.pop('debt', None)
+        serializer.save()
