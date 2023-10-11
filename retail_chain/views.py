@@ -7,7 +7,7 @@ from rest_framework import generics, filters
 from rest_framework.permissions import IsAuthenticated
 
 from retail_chain.models import Link, Contacts
-from retail_chain.serializers import LinkSerializer
+from retail_chain.serializers import LinkSerializer, ContactSerializer, ProductSerializer
 
 
 class RetailChainView(ListView):
@@ -124,3 +124,17 @@ class LinkUpdateAPIView(generics.UpdateAPIView):
 
         debt = serializer.validated_data.pop('debt', None)  # удаление поля
         serializer.save()  # сохранение обновленных данных
+
+
+class ContactCreateAPIView(generics.CreateAPIView):
+    """Контроллер для создания контактов"""
+
+    serializer_class = ContactSerializer  # сериализатор
+    permission_classes = [IsAuthenticated]  # разрешение на доступ только для авторизованных пользователей
+
+
+class ProductCreateAPIView(generics.CreateAPIView):
+    """Контроллер для создания продукта"""
+
+    serializer_class = ProductSerializer  # Сериализатор
+    permission_classes = [IsAuthenticated]

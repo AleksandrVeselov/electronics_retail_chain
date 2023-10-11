@@ -2,7 +2,8 @@ from django.urls import path
 
 from retail_chain.apps import RetailChainConfig
 from retail_chain.views import (RetailChainView, RetailChainDetailView, clear_debt, ContactsListView, LinkListAPIView,
-                                LinkCreateAPIView, LinkRetrieveAPIView, LinkDestroyAPIView, LinkUpdateAPIView)
+                                LinkCreateAPIView, LinkRetrieveAPIView, LinkDestroyAPIView, LinkUpdateAPIView,
+                                ContactCreateAPIView, ProductCreateAPIView)
 
 app_name = RetailChainConfig.name
 
@@ -16,5 +17,7 @@ urlpatterns = [
     path('api/links/create', LinkCreateAPIView.as_view(), name='api-chain-create'),  # создание звена сети через API
     path('api/links/<int:pk>', LinkRetrieveAPIView.as_view(), name='api-chain'),  # звено сети детально через API
     path('api/links/delete/<int:pk>', LinkDestroyAPIView.as_view(), name='api-chain-destroy'),  # удаление звена API
-    path('api/links/update/<int:pk>', LinkUpdateAPIView.as_view(), name='api-chain-update')  # обновление звена API
+    path('api/links/update/<int:pk>', LinkUpdateAPIView.as_view(), name='api-chain-update'),  # обновление звена API
+    path('api/contacts/create', ContactCreateAPIView.as_view(), name='api-contact-create'),  # добавление контактов
+    path('api/product/create', ProductCreateAPIView.as_view(), name='api-product-create'),  # добавление продукта
 ]
