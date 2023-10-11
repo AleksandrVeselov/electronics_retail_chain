@@ -8,10 +8,11 @@ class Command(BaseCommand):
     def handle(self, *args, **kwargs):
         """Команда для создания суперпользователя"""
         employee = Employee.objects.create(email='admin@admin.ru',
-                                       first_name='admin',
-                                       last_name='admin',
-                                       is_staff=True,
-                                       is_superuser=True)
+                                           username='admin',
+                                           first_name='admin',
+                                           last_name='admin',
+                                           is_staff=True,
+                                           is_superuser=True)
 
         employee.set_password('admin')
         employee.save()
